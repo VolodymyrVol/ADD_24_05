@@ -96,7 +96,7 @@
         case 'delete':
             let parentUl = e.target.parentElement;
             parentUl.removeChild(e.target);
-            if (parentUl.children.length === 0 && parentUl !== document.body) {
+            if (parentUl.children.length === 0) {
                 parentUl.remove();
             }
             break;
