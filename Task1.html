@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        p {
+            display: inline;
+        }
+    </style>
+</head>
+<body>
+    <div id="listActions">
+        <div>
+            <input type="radio" name="mainChoose" value="Add">
+            <p>Добавить елемент в конец списка</p>
+            <input type="text">
+        </div>
+        <div>
+            <input type="radio" name="mainChoose" value="Insert">
+            <p>Вставить елемент списка</p>
+            <input type="text">
+        </div>
+        <div>
+            <input type="radio" name="mainChoose" value="ChangeText">
+            <p>Изменить текс элемента списка</p>
+            <input type="text">
+        </div>
+        <div>
+            <input type="radio" name="mainChoose" value="AddN">
+            <p>Добавить вложенный список</p>
+            <input type="text">
+        </div>
+        <div>
+            <input type="radio" name="mainChoose" value="delete">
+            <p>Удалить елемент списка</p>
+        </div>
+        <button id="addBtn">Добавить новый список</button>
+    </div>
+
+    <script>
+        //button
+        let button = document.querySelector("#addBtn");
+        let div = document.querySelectorAll('#listActions div');
+        button.addEventListener("click", function() {
+            let ul = document.createElement("ul");
+            let start = document.createElement("li");
+            start.textContent = "first element";
+            ul.append(start);
+            document.body.append(ul);
+        })
+        //onclick 
+        document.body.addEventListener("click", function(e) {
+            if(e.target.tagName !== "LI") {
+                return
+            }
+            let action = document.querySelector('input[name="mainChoose"]:checked');
+             if (!action) {
+            alert('Выберите действие!');
+            return;
+            }
+        
+        let type = action.value;
+        let input = action.parentElement.querySelector('input[type="text"]');
+        let text = '';
+        if (input) {
+            text = input.value;
+            if (text.trim() === "" && type !== 'delete') { 
+                alert('Введите текст для выбранного действия!');
+                return;
+            }
+    }
+        switch(type) {
+        case 'Add':
+            let ul = e.target.parentElement;
+            let newLi = document.createElement('li');
+            newLi.textContent = text;
+            ul.append(newLi);
+            break;
+        case 'Insert':
+            let insertLi = document.createElement('li');
+            insertLi.textContent = text;
+            e.target.before(insertLi);
+            break;
+        case 'ChangeText':
+            e.target.textContent = text;
+            break;
+        case 'AddN':
+            let nUl = document.createElement('ul');
+            let nLi = document.createElement('li');
+            nLi.textContent = text;
+            nUl.appendChild(nLi);
+            e.target.appendChild(nUl);
+            break;
+        case 'delete':
+            let parentUl = e.target.parentElement;
+            parentUl.removeChild(e.target);
+            if (parentUl.children.length === 0 && parentUl !== document.body) {
+                parentUl.remove();
+            }
+            break;
+    }
+})
+    </script>
+</body>
+</html>
